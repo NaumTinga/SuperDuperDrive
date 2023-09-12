@@ -24,8 +24,6 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-
-
     @GetMapping
     public String getAllNotes(Authentication authentication, Model model) {
         Integer userId = getUserId(authentication);

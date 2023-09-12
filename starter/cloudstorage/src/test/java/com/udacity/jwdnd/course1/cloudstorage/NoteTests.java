@@ -1,5 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
+import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.service.NoteService;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -16,8 +18,9 @@ class NoteTests extends CloudStorageApplicationTests {
 	private int port;
 
 	private WebDriver driver;
-	private HomePage homePage;
-	private NoteService noteService;
+
+	private UserMapper userMapper;
+	public NoteMapper noteMapper;
 
 	@BeforeAll
 	public static void beforeAll() {
@@ -27,8 +30,8 @@ class NoteTests extends CloudStorageApplicationTests {
 	@BeforeEach
 	public void beforeEach() {
 		this.driver = new ChromeDriver();
-		this.homePage = new HomePage(driver);
-		this.noteService = new NoteService();
+		HomePage homePage = new HomePage(driver);
+		NoteService noteService = new NoteService(userMapper, noteMapper);
 		login();
 	}
 

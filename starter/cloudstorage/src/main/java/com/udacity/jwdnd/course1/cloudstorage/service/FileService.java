@@ -29,20 +29,15 @@ public class FileService  {
     }
 
 
-    // upload new file to use in FilesController:
     public int uploadFile(MultipartFile mFile, int userId) throws IOException {
-
-        // Convert the uploaded file under MultipartFile into FileForm
-        // before storing to db:
-        // filename, contenttype, filesize, userid, filedata
         File file = new File(null, mFile.getOriginalFilename(),
                 mFile.getContentType(), mFile.getSize(), userId, mFile.getBytes());
 
         return this.fileMapper.insert(file);
     }
 
-    public int deleteFile(Integer fileId) {
-        return fileMapper.deleteFile(fileId);
+    public void deleteFile(Integer fileId) {
+        fileMapper.deleteFile(fileId);
     }
 
 
