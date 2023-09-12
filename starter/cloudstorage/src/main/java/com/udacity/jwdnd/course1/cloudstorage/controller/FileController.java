@@ -5,13 +5,15 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.service.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.service.UserService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -35,24 +37,16 @@ public class FileController {
         return new FileDTO();
     }
 
-    // POST to upload new file:
-    @PostMapping()
+
+    @PostMapping("/file/upload")
     public String uploadNewFile(Authentication authentication, Model model, @ModelAttribute("fileDTO") MultipartFile file) throws IOException {
-
         String errorMsg = null;
-
-        //int currentUserId = this.userService.getUserById(auth.getName());
         Integer userId = getUserId(authentication);
-
         System.out.println("NAME: " + file.getName());
-
-        // handle edge cases:
-
         // when empty file is uploaded:
         if (file.isEmpty()) {
             errorMsg = "File should not be empty!";
         }
-
         if (errorMsg == null) {
             // upload file to Files db by fileId:
             // return current fileId if success:
@@ -61,17 +55,33 @@ public class FileController {
                 errorMsg = "There was error uploading this file!";
             }
         }
-
         // show result.html page with success/fail message:
         if (errorMsg == null) {
-            model.addAttribute("updateSuccess", true);
+            model.addAttribute("result", "success");
         } else {
-            model.addAttribute("updateFail", errorMsg);
+            model.addAttribute("result", "notSaved");
         }
 
         return "result";
     }
 
+    @GetMapping(value = "/delete/{fileId}")
+    public String deleteFile(@PathVariable Integer fileId, Model model){
+        fileService.deleteFile(fileId);
+        model.addAttribute("result", "success");
+        return "result";
+    }
+
+    @GetMapping(value = "/view/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public @ResponseBody
+    ResponseEntity<byte[]> viewData(@PathVariable Integer fileId){
+        File file = fileService.getFileById(fileId);
+        String fileName = file.getFileName();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(file.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+fileName+"\"")
+                .body(file.getFileData());
+    }
 
     private Integer getUserId(Authentication authentication) {
         String userName = authentication.getName();

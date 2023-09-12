@@ -1,5 +1,5 @@
 <div th:fragment="fileFragment">
-<form action="#" th:action="@{'/files'}" th:object="${fileDTO}" enctype="multipart/form-data" method="POST" >
+<form action="#" th:action="@{'/files/file/upload'}" th:object="${fileDTO}" enctype="multipart/form-data" method="POST" >
   <div class="container">
     <div class="row" style="margin: 1em;">
       <div class="col-sm-2">
@@ -25,8 +25,8 @@
     <tbody>
     <tr th:id="${file.fileId}" th:each="file:${files}">
       <td>
-        <a target="_blank" class="btn btn-success">View</a>
-        <a  class="btn btn-danger">Delete</a>
+        <a target="_blank" class="btn btn-success" th:href="@{/files/view/{fileId}(fileId = ${file.getFileId()})}">View</a>
+        <a  class="btn btn-danger" th:href="@{/files/delete/{fileId}(fileId = ${file.getFileId()})}">Delete</a>
       </td>
       <th scope="row"  th:text="${file.fileName}">ExampleFile.txt</th>
     </tr>

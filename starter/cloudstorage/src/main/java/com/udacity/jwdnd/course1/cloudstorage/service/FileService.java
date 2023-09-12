@@ -3,14 +3,10 @@ package com.udacity.jwdnd.course1.cloudstorage.service;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
-import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -28,7 +24,9 @@ public class FileService  {
         return (List<File>) fileMapper.getAllFiles(userId);
     }
 
-
+    public File getFileById(Integer fileId){
+        return  fileMapper.getFileById(fileId);
+    }
 
 
     // upload new file to use in FilesController:
@@ -41,6 +39,10 @@ public class FileService  {
                 mFile.getContentType(), mFile.getSize(), userId, mFile.getBytes());
 
         return this.fileMapper.insert(file);
+    }
+
+    public int deleteFile(Integer fileId) {
+        return fileMapper.deleteFile(fileId);
     }
 
 

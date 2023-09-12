@@ -17,10 +17,7 @@ public class NoteService {
         this.userMapper = userMapper;
         this.noteMapper = noteMapper;
     }
-
-    public NoteService() {
-    }
-
+    
     public List<Note> getAllNotes(Integer userId){
         return (List<Note>) noteMapper.getAllNotes(userId);
     }
