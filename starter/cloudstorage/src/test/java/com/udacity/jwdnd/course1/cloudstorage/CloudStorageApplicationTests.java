@@ -19,11 +19,13 @@ class CloudStorageApplicationTests {
 	@LocalServerPort
 	private int port;
 
-	private WebDriver driver;
+	public WebDriver driver;
 
 	@BeforeAll
 	static void beforeAll() {
-		WebDriverManager.chromedriver().setup();
+		//WebDriverManager.chromedriver().setup();
+		System.setProperty("webdriver.chrome.driver", "/Users/naumtinga/Downloads/chromedriver_mac_arm64/ChromeDriver/chromedriver");
+
 	}
 
 	@BeforeEach
@@ -42,6 +44,23 @@ class CloudStorageApplicationTests {
 	public void getLoginPage() {
 		driver.get("http://localhost:" + this.port + "/login");
 		Assertions.assertEquals("Login", driver.getTitle());
+	}
+
+	protected HomePage signUpAndLogin() {
+		driver.get("http://localhost:" + this.port + "/signup");
+		SignupPage signupPage = new SignupPage(driver);
+		signupPage.setFirstName("Naum");
+		signupPage.setLastName("Tinga");
+		signupPage.setUserName("Naum");
+		signupPage.setPassword("1234");
+		signupPage.signUp();
+		driver.get("http://localhost:" + this.port + "/login");
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.setUserName("Naum");
+		loginPage.setPassword("1234");
+		loginPage.login();
+
+		return new HomePage(driver);
 	}
 
 	/**
