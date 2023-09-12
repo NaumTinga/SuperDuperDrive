@@ -42,13 +42,11 @@ public class CredentialController {
 
     @PostMapping
     public String createCredential(Credential credential, Principal principal, Model model) {
-        String createNoteError = null;
         String username = principal.getName(); // Get the currently logged-in user's username
 
         if (credential.getUrl() == null || credential.getUsername() == null || credential.getPassword() == null) {
-            createNoteError = "Url, Username, and Password must be provided";
-            model.addAttribute("createNoteError", createNoteError);
-            return "createNoteError";
+            model.addAttribute("result", "notSaved");
+            return "result";
         } else {
             // Generate a random encryption key
             SecureRandom random = new SecureRandom();
@@ -64,19 +62,22 @@ public class CredentialController {
 
             if (credential.getCredentialId() != null) {
                 credentialService.update(credential);
+                model.addAttribute("result", "success");
             } else {
                 credentialService.createCredentials(credential, username);
+                model.addAttribute("result", "success");
             }
 
             model.addAttribute("encryptionService", encryptionService);
         }
-        return "redirect:/home";
+        return "result";
     }
 
     @GetMapping(value = "/delete/{credentialId}")
-    public String deleteNoteById(@PathVariable Integer credentialId) {
+    public String deleteNoteById(@PathVariable Integer credentialId, Model model) {
         credentialService.deleteCredentialById(credentialId);
-        return "redirect:/home";
+        model.addAttribute("result", "success");
+        return "result";
     }
 
 

@@ -36,7 +36,7 @@ public class FileController {
     }
 
     // POST to upload new file:
-    @PostMapping("/home/file/newFile")
+    @PostMapping()
     public String uploadNewFile(Authentication authentication, Model model, @ModelAttribute("fileDTO") MultipartFile file) throws IOException {
 
         String errorMsg = null;
@@ -69,11 +69,8 @@ public class FileController {
             model.addAttribute("updateFail", errorMsg);
         }
 
-        return "home";
+        return "result";
     }
-
-
-
 
 
     private Integer getUserId(Authentication authentication) {

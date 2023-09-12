@@ -41,29 +41,30 @@ public class NoteController {
 
     @PostMapping
     public String createNote(Note note, Principal principal, Model model) {
-        String createNoteError = null;
-        String username = principal.getName(); // Get the currently logged-in user's username
+        String username = principal.getName();
 
         if (note.getNoteTitle() == null || note.getNoteDescription() == null) {
-            createNoteError = "Note Title and Description must be provided";
-            model.addAttribute("createNoteError", createNoteError);
-            return "createNoteError";
+            model.addAttribute("result", "notSaved");
+            return "result";
         } else {
             if (note.getNoteId() != null) {
                 // Note with noteId exists, update it
                 noteService.update(note);
+                model.addAttribute("result", "success");
             } else {
                 // Note with noteId is null, create a new note
                 noteService.createNote(note, username);
+                model.addAttribute("result", "success");
             }
-            return "redirect:/home";
+            return "result";
         }
     }
 
     @GetMapping(value = "/delete/{noteId}")
-    public String deleteNoteById(@PathVariable Integer noteId) {
+    public String deleteNoteById(@PathVariable Integer noteId, Model model) {
         noteService.deleteNoteById(noteId);
-        return "redirect:/home";
+        model.addAttribute("result", "success");
+        return "result";
     }
 
 }
