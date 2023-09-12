@@ -72,6 +72,8 @@ public class FileController {
         return "result";
     }
 
+
+    //Source = https://www.baeldung.com/spring-controller-return-image-file
     @GetMapping(value = "/view/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public @ResponseBody
     ResponseEntity<byte[]> viewData(@PathVariable Integer fileId){
