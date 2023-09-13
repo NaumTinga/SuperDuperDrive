@@ -46,7 +46,6 @@ public class NoteController {
         Note noteExists = noteService.findByTitleAndDescription(userId, note.getNoteTitle(), note.getNoteDescription());
 
         if (noteExists != null){
-            // A note with the same title and description already exists
             model.addAttribute("result", "duplicateNote");
             return "result";
         }

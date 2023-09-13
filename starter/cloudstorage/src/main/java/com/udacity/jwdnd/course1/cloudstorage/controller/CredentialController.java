@@ -62,11 +62,12 @@ public class CredentialController {
             credential.setKey(encryptionKey);
 
             if (credential.getCredentialId() != null) {
+                //not necessary to check duplicate username for update because, user might want to update other fields
                 credentialService.update(credential);
                 model.addAttribute("result", "success");
             } else {
                 if (usernameExists != null){
-                    // Credential username already exists
+                    //Checks if username exists before creating a new credential
                     model.addAttribute("result", "duplicateCredential");
                     return "result";
                 } else {

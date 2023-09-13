@@ -43,6 +43,14 @@ public class FileController {
         String errorMsg = null;
         Integer userId = getUserId(authentication);
         System.out.println("NAME: " + file.getName());
+        String filename = file.getOriginalFilename();
+
+        if (fileService.findByFileName(userId, filename) != null){
+            //checks if filename already exists
+            model.addAttribute("result", "duplicateFile");
+            return "result";
+        }
+
         // when empty file is uploaded:
         if (file.isEmpty()) {
             errorMsg = "File should not be empty!";

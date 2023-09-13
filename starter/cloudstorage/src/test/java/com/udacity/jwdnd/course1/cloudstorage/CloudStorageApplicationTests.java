@@ -7,6 +7,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,13 +25,16 @@ class CloudStorageApplicationTests {
 	@BeforeAll
 	static void beforeAll() {
 		//WebDriverManager.chromedriver().setup();
-		System.setProperty("webdriver.chrome.driver", "/Users/naumtinga/Downloads/chromedriver_mac_arm64/ChromeDriver/chromedriver");
+		WebDriverManager.firefoxdriver().setup();
+		//System.setProperty("webdriver.chrome.driver", "/Users/naumtinga/Downloads/chromedriver_mac_arm64/ChromeDriver/chromedriver");
 
 	}
 
 	@BeforeEach
 	public void beforeEach() {
-		this.driver = new ChromeDriver();
+
+		//this.driver = new ChromeDriver();
+		this.driver = new FirefoxDriver();
 	}
 
 	@AfterEach
