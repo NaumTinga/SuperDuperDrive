@@ -25,6 +25,10 @@ public class CredentialService {
         return (List<Credential>) credentialMapper.getAllCredentials(userId);
     }
 
+    public Credential findByUsername(Integer userId, String username){
+        return credentialMapper.findByUsername(userId, username);
+    }
+
     public void createCredentials(Credential credential, String username){
         Integer userId = userMapper.getUser(username).getUserId(); //get userId
         credential.setUserId(userId);

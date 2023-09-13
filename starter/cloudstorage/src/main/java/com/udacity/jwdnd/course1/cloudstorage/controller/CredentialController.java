@@ -41,8 +41,10 @@ public class CredentialController {
     }
 
     @PostMapping
-    public String createCredential(Credential credential, Principal principal, Model model) {
+    public String createCredential(Authentication authentication, Credential credential, Principal principal, Model model) {
         String username = principal.getName(); // Get the currently logged-in user's username
+        Integer userId = getUserId(authentication);
+        Credential usernameExists = credentialService.findByUsername(userId, credential.getUsername());
 
         if (credential.getUrl() == null || credential.getUsername() == null || credential.getPassword() == null) {
             model.addAttribute("result", "notSaved");
@@ -59,13 +61,18 @@ public class CredentialController {
             credential.setPassword(encryptedPassword);
             credential.setKey(encryptionKey);
 
-
             if (credential.getCredentialId() != null) {
                 credentialService.update(credential);
                 model.addAttribute("result", "success");
             } else {
-                credentialService.createCredentials(credential, username);
-                model.addAttribute("result", "success");
+                if (usernameExists != null){
+                    // Credential username already exists
+                    model.addAttribute("result", "duplicateCredential");
+                    return "result";
+                } else {
+                    credentialService.createCredentials(credential, username);
+                    model.addAttribute("result", "success");
+                }
             }
 
             model.addAttribute("encryptionService", encryptionService);

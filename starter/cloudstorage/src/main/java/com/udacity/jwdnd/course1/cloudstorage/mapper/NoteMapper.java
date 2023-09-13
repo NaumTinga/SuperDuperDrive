@@ -11,6 +11,9 @@ public interface NoteMapper {
     @Select("SELECT * FROM NOTES WHERE id = #{noteId}")
     Note getNote(Integer noteId);
 
+    @Select("SELECT * FROM NOTES WHERE userId = #{userId} and noteTitle = #{noteTitle} and noteDescription = #{noteDescription}")
+    Note findByTitleAndDescription(Integer userId, String noteTitle, String noteDescription);
+
     @Select("SELECT * FROM NOTES WHERE userId = #{userId}")
     List<Note> getAllNotes(Integer userId);
 

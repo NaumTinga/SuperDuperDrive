@@ -23,6 +23,21 @@
         <span th:text="${message}">Example Error Message</span>
         <span>Click <a href="/home" id="aResultFailure">here</a> to continue.</span>
     </div>
+    <div th:if="${result == 'duplicateNote'}" class="alert alert-danger fill-parent">
+        <h1 class="display-5">Note already exists!</h1>
+        <span th:text="${message}">Example Error Message</span>
+        <span>Click <a href="/home" id="duplicateNote">here</a> to continue.</span>
+    </div>
+    <div th:if="${result == 'duplicateCredential'}" class="alert alert-danger fill-parent">
+        <h1 class="display-5">Credential Username already exists!</h1>
+        <span th:text="${message}">Example Error Message</span>
+        <span>Click <a href="/home" id="duplicateCredential">here</a> to continue.</span>
+    </div>
+    <div th:if="${result == 'duplicateFile'}" class="alert alert-danger fill-parent">
+        <h1 class="display-5">File already exists!</h1>
+        <span th:text="${message}">Example Error Message</span>
+        <span>Click <a href="/home" id="duplicateFile">here</a> to continue.</span>
+    </div>
 </div>
 </body>
 </html>

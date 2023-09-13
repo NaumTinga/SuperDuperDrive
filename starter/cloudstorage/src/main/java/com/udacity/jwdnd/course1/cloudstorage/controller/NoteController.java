@@ -20,8 +20,9 @@ public class NoteController {
     private NoteService noteService;
     private UserService userService;
 
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteService noteService, UserService userService) {
         this.noteService = noteService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -38,8 +39,17 @@ public class NoteController {
     }
 
     @PostMapping
-    public String createNote(Note note, Principal principal, Model model) {
+    public String createNote(Authentication authentication, Note note, Principal principal, Model model) {
         String username = principal.getName();
+        Integer userId = getUserId(authentication);
+
+        Note noteExists = noteService.findByTitleAndDescription(userId, note.getNoteTitle(), note.getNoteDescription());
+
+        if (noteExists != null){
+            // A note with the same title and description already exists
+            model.addAttribute("result", "duplicateNote");
+            return "result";
+        }
 
         if (note.getNoteTitle() == null || note.getNoteDescription() == null) {
             model.addAttribute("result", "notSaved");

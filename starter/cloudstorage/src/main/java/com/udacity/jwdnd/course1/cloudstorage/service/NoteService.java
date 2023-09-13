@@ -24,6 +24,10 @@ public class NoteService {
     }
 
 
+    public Note findByTitleAndDescription(Integer userId, String noteTitle, String noteDescription){
+        return noteMapper.findByTitleAndDescription(userId, noteTitle, noteDescription);
+    }
+
 
     public void createNote(Note note, String username) {
         Integer userId = userMapper.getUser(username).getUserId(); //get userId

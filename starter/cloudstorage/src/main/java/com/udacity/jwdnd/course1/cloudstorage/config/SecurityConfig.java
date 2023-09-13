@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/signup", "/css/**", "/js/**").permitAll()
+                    .antMatchers("/login*","/signup", "/css/**", "/js/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -35,13 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout() // Configure logout
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login") // Redirect to the login page after logout
+                    .logoutSuccessUrl("/login?logout") // Redirect to the login page after logout
                 .and()
                 .formLogin()
                     .defaultSuccessUrl("/home", true);
     }
-
-
-
 }
 
